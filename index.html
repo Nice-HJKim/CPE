@@ -1,0 +1,847 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AWS Certified Cloud Practitioner - Day 1 교재</title>
+<meta name="description" content="AWS Certified Cloud Practitioner Day 1 학습 교재: 클라우드 이점, 설계 원칙, 마이그레이션, 경제성, 글로벌 인프라" />
+<style>
+  :root{
+    --navy:#111827;
+    --navy2:#1f2937;
+    --ink:#172033;
+    --muted:#5f6b7a;
+    --line:#d9dee8;
+    --soft:#f6f8fb;
+    --soft2:#eef3f8;
+    --orange:#ff9900;
+    --orange2:#fff1d6;
+    --blue:#2563eb;
+    --blue2:#eaf2ff;
+    --green:#15803d;
+    --green2:#eaf7ee;
+    --red:#b42318;
+    --red2:#fff0ee;
+    --violet:#6d28d9;
+    --violet2:#f2ecff;
+    --shadow:0 12px 30px rgba(17,24,39,.08);
+    --radius:18px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",Arial,sans-serif;
+    color:var(--ink);
+    background:#fff;
+    line-height:1.7;
+    font-size:16px;
+  }
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+  .progress{
+    position:fixed;top:0;left:0;height:4px;background:var(--orange);width:0;z-index:1000;
+  }
+  .layout{display:grid;grid-template-columns:285px minmax(0,1fr);min-height:100vh}
+  aside{
+    position:sticky;top:0;height:100vh;padding:28px 20px 24px;
+    background:linear-gradient(180deg,#0f172a,#111827 62%,#1f2937);
+    color:#fff;overflow:auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .brand-mark{
+    width:38px;height:38px;border-radius:12px;background:var(--orange);
+    display:grid;place-items:center;color:#111827;font-weight:900;
+  }
+  .brand-title{font-weight:800;line-height:1.2}
+  .brand-sub{font-size:12px;color:#cbd5e1;margin-top:3px}
+  .toc-label{font-size:11px;letter-spacing:.12em;color:#94a3b8;font-weight:800;margin:22px 8px 8px}
+  nav a{
+    display:block;color:#cbd5e1;padding:8px 10px;border-radius:10px;font-size:14px;
+    margin:2px 0;transition:.2s;
+  }
+  nav a:hover,nav a.active{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+  nav a.active{box-shadow:inset 3px 0 0 var(--orange)}
+  .side-actions{margin-top:22px;display:grid;gap:8px}
+  .side-btn{
+    appearance:none;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);
+    color:#fff;padding:9px 11px;border-radius:10px;cursor:pointer;font-weight:700;font-size:13px;text-align:left;
+  }
+  .side-btn:hover{background:rgba(255,255,255,.11)}
+  main{min-width:0}
+  .hero{
+    padding:72px clamp(28px,5vw,80px) 58px;
+    background:
+      radial-gradient(circle at 90% 10%,rgba(255,153,0,.18),transparent 32%),
+      linear-gradient(180deg,#f8fafc,#fff);
+    border-bottom:1px solid var(--line);
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;
+    background:var(--orange2);color:#8a4d00;font-size:13px;font-weight:800;
+  }
+  h1{font-size:clamp(34px,5vw,58px);line-height:1.1;margin:18px 0 12px;letter-spacing:-.035em}
+  .hero p{font-size:19px;color:var(--muted);max-width:880px;margin:0}
+  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+  .meta span{background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:999px;font-size:13px;font-weight:700}
+  .content{max-width:1160px;margin:0 auto;padding:44px clamp(22px,4vw,56px) 100px}
+  section{scroll-margin-top:24px;margin:0 0 70px}
+  .module-head{display:flex;align-items:flex-start;gap:16px;margin-bottom:24px}
+  .module-no{
+    flex:0 0 auto;width:48px;height:48px;border-radius:14px;background:var(--navy);color:#fff;
+    display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:var(--shadow);
+  }
+  h2{font-size:34px;line-height:1.2;margin:0 0 6px;letter-spacing:-.025em}
+  h3{font-size:23px;line-height:1.3;margin:32px 0 12px;letter-spacing:-.015em}
+  h4{font-size:18px;margin:20px 0 8px}
+  .lead{color:var(--muted);margin:0;max-width:900px}
+  .objectives{
+    display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:28px;
+  }
+  .obj{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+  .obj strong{display:block;margin-bottom:4px}
+  .obj small{color:var(--muted)}
+  .cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0}
+  .card{
+    border:1px solid var(--line);border-radius:var(--radius);padding:20px;background:#fff;
+    box-shadow:0 8px 22px rgba(17,24,39,.04);
+  }
+  .card h4{margin:0 0 8px}
+  .card p{margin:0;color:var(--muted)}
+  .tag{
+    display:inline-block;font-size:12px;font-weight:800;border-radius:999px;padding:4px 8px;margin-bottom:9px;
+    background:var(--soft2);color:var(--navy2);
+  }
+  .tag.orange{background:var(--orange2);color:#8a4d00}
+  .tag.blue{background:var(--blue2);color:#174ea6}
+  .tag.green{background:var(--green2);color:#146c2e}
+  .tag.violet{background:var(--violet2);color:#5b21b6}
+  .callout{
+    border-left:5px solid var(--orange);background:#fff8e8;border-radius:14px;padding:17px 18px;margin:20px 0;
+  }
+  .callout strong{display:block;margin-bottom:5px}
+  .callout.blue{border-left-color:var(--blue);background:#f4f8ff}
+  .callout.green{border-left-color:var(--green);background:#f0faf3}
+  .callout.red{border-left-color:var(--red);background:#fff5f3}
+  .instructor{
+    border:1px dashed #9aa4b2;background:#f8fafc;border-radius:14px;padding:16px 18px;margin:18px 0;
+  }
+  .instructor::before{content:"강사 노트";display:inline-block;font-size:12px;font-weight:900;background:#111827;color:#fff;border-radius:999px;padding:3px 8px;margin-bottom:7px}
+  body.hide-instructor .instructor{display:none}
+  table{width:100%;border-collapse:separate;border-spacing:0;margin:16px 0 22px;overflow:hidden;border:1px solid var(--line);border-radius:14px}
+  th,td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;text-align:left}
+  th{background:#f3f5f8;font-size:14px}
+  tr:last-child td{border-bottom:none}
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .compare > div{border:1px solid var(--line);border-radius:16px;padding:18px;background:#fff}
+  .compare .vs{position:relative}
+  .bad{border-top:5px solid #c2410c!important}
+  .good{border-top:5px solid #15803d!important}
+  ul,ol{padding-left:1.25rem}
+  li{margin:.28rem 0}
+  .flow{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:16px 0}
+  .flow .node{
+    padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:800;
+  }
+  .flow .arrow{color:#94a3b8;font-weight:900}
+  .six{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+  .pillar{border-radius:14px;padding:16px;border:1px solid var(--line);background:#fff}
+  .pillar b{display:block;margin-bottom:4px}
+  .kpi{font-size:13px;color:var(--muted)}
+  .stack{
+    display:grid;grid-template-columns:1.1fr repeat(4,1fr);gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:16px 0;
+  }
+  .stack div{padding:9px 10px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px}
+  .stack div:nth-child(5n){border-right:none}
+  .stack .head{font-weight:900;background:#f3f5f8;text-align:center}
+  .stack .layer{font-weight:700;background:#fbfcfe}
+  .mine{background:#fff3df}
+  .provider{background:#edf4ff}
+  .both{background:#f0faf3}
+  .quiz-links{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+  .quiz-links a{display:inline-block;padding:10px 14px;border-radius:10px;background:var(--navy);color:#fff;font-weight:800}
+  .quiz-links a:hover{text-decoration:none;background:#253047}
+  .exam{
+    background:linear-gradient(135deg,#fff7e8,#fff);border:1px solid #ffd08a;border-radius:16px;padding:18px;margin:20px 0;
+  }
+  .exam b{color:#7c4700}
+  .nested{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:16px;border:2px solid #cbd5e1;border-radius:18px;background:#fbfdff;margin:16px 0;
+  }
+  .az{border:2px solid #93c5fd;border-radius:14px;padding:14px;background:#eff6ff;min-height:120px}
+  .dc{margin-top:12px;border:1px solid #bfdbfe;background:#fff;border-radius:10px;padding:10px;font-size:13px}
+  .edge{margin-top:12px;padding:13px;border-radius:14px;border:2px dashed #fdba74;background:#fff7ed}
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:16px 0}
+  .step{position:relative;border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+  .step strong{display:block;color:var(--blue);margin-bottom:5px}
+  .rgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+  .r{border-radius:14px;border:1px solid var(--line);padding:14px;background:#fff}
+  .r b{display:block}
+  .r span{font-size:13px;color:var(--muted)}
+  details{
+    border:1px solid var(--line);border-radius:12px;background:#fff;padding:12px 14px;margin:10px 0;
+  }
+  summary{cursor:pointer;font-weight:800}
+  details p{margin:9px 0 2px;color:var(--muted)}
+  .summary-box{
+    border:1px solid var(--line);background:linear-gradient(180deg,#f8fafc,#fff);
+    border-radius:18px;padding:22px;margin:26px 0;
+  }
+  .summary-box h3{margin-top:0}
+  .mini{font-size:13px;color:var(--muted)}
+  .term{font-weight:900;color:var(--navy)}
+  .toplink{display:inline-block;margin-top:18px;font-size:13px}
+  footer{
+    background:#0f172a;color:#cbd5e1;padding:34px clamp(22px,4vw,56px);
+  }
+  footer strong{color:#fff}
+  .print-note{font-size:13px;color:#94a3b8;margin-top:8px}
+  @media (max-width:980px){
+    .layout{grid-template-columns:1fr}
+    aside{position:relative;height:auto}
+    nav{display:grid;grid-template-columns:repeat(2,1fr)}
+    .objectives,.cards,.six{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .stack{display:none}
+    .rgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:650px){
+    .hero{padding:48px 20px 36px}
+    .content{padding:34px 18px 70px}
+    .objectives,.cards,.six,.compare,.timeline,.nested,.rgrid{grid-template-columns:1fr}
+    nav{grid-template-columns:1fr}
+    h2{font-size:28px}
+  }
+  @media print{
+    .progress,aside,.side-actions,.toplink{display:none!important}
+    .layout{display:block}
+    .hero{padding:28px 0 24px;background:#fff}
+    .content{max-width:none;padding:20px 0}
+    section{break-inside:auto;margin-bottom:42px}
+    .card,.pillar,.callout,.instructor,.exam,details,.summary-box{break-inside:avoid;box-shadow:none}
+    a{color:inherit;text-decoration:none}
+    body{font-size:11pt}
+    h1{font-size:28pt} h2{font-size:22pt} h3{font-size:16pt}
+  }
+</style>
+</head>
+<body class="instructor-on">
+<div class="progress" id="progress"></div>
+<div class="layout">
+  <aside>
+    <div class="brand">
+      <div class="brand-mark">AWS</div>
+      <div>
+        <div class="brand-title">Cloud Practitioner</div>
+        <div class="brand-sub">Day 1 · Instructor Material</div>
+      </div>
+    </div>
+
+    <div class="toc-label">CONTENTS</div>
+    <nav id="toc">
+      <a href="#overview">0. 수업 개요</a>
+      <a href="#m1">1. AWS 클라우드의 이점</a>
+      <a href="#m2">2. AWS 클라우드 설계 원칙</a>
+      <a href="#m3">3. AWS 클라우드 마이그레이션</a>
+      <a href="#m4">4. 클라우드 경제성</a>
+      <a href="#m5">5. AWS 글로벌 인프라</a>
+      <a href="#review">6. Day 1 최종 정리</a>
+      <a href="#quiz">7. 종합 확인 문제</a>
+    </nav>
+
+    <div class="side-actions">
+      <button class="side-btn" id="toggleInstructor">강사 노트 숨기기</button>
+      <button class="side-btn" onclick="window.print()">인쇄 / PDF 저장</button>
+    </div>
+  </aside>
+
+  <main>
+    <header class="hero" id="top">
+      <span class="eyebrow">AWS Certified Cloud Practitioner · Day 1</span>
+      <h1>클라우드의 핵심 개념부터<br/>AWS 글로벌 인프라까지</h1>
+      <p>
+        첫날 수업에서 꼭 이해해야 할 개념을 “클라우드의 가치 → 설계 원칙 → 마이그레이션 → 비용 → 글로벌 인프라”
+        순서로 연결해 학습합니다.
+      </p>
+      <div class="meta">
+        <span>대상: AWS 입문자</span>
+        <span>목표: CLF-C02 기초 개념 정립</span>
+        <span>형식: 강의 + 개념 확인 + 복습 문제</span>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section id="overview">
+        <div class="module-head">
+          <div class="module-no">0</div>
+          <div>
+            <h2>수업 개요</h2>
+            <p class="lead">오늘의 목표는 AWS 서비스를 많이 외우는 것이 아니라, “왜 클라우드를 쓰는가?”를 중심으로 개념 간 관계를 이해하는 것입니다.</p>
+          </div>
+        </div>
+
+        <div class="objectives">
+          <div class="obj"><strong>클라우드 모델 구분</strong><small>Public / Private / Hybrid, IaaS / PaaS / SaaS</small></div>
+          <div class="obj"><strong>클라우드 가치 이해</strong><small>종량제, 탄력성, 민첩성, 고가용성</small></div>
+          <div class="obj"><strong>설계 원칙 파악</strong><small>느슨한 결합, 복원력, 추적성, Well-Architected</small></div>
+          <div class="obj"><strong>마이그레이션 이해</strong><small>AWS CAF, 7R, 이동·평가 도구</small></div>
+          <div class="obj"><strong>경제성 이해</strong><small>CapEx→OpEx, TCO, Right Sizing, 할인 모델</small></div>
+          <div class="obj"><strong>글로벌 인프라 이해</strong><small>Region, AZ, Edge Location, 글로벌 서비스</small></div>
+        </div>
+
+        <div class="callout">
+          <strong>수업 흐름 한 문장</strong>
+          “직접 데이터센터를 소유하는 대신 필요한 만큼 빌려 쓰고, 장애에 강하고 확장 가능한 구조로 설계하며, 전 세계 AWS 인프라를 활용한다.”
+        </div>
+
+        <div class="instructor">
+          첫 질문으로 “서버를 직접 사서 운영하는 것과 AWS에서 EC2를 필요할 때 만드는 것의 가장 큰 차이는 무엇일까요?”를 던지면
+          이후 Pay-as-you-go, CapEx/OpEx, 탄력성까지 자연스럽게 연결할 수 있습니다.
+        </div>
+      </section>
+
+      <section id="m1">
+        <div class="module-head">
+          <div class="module-no">1</div>
+          <div>
+            <h2>1.1 AWS 클라우드의 이점</h2>
+            <p class="lead">클라우드 컴퓨팅의 기본 모델, 서비스 제공 방식, AWS 클라우드의 대표적 이점을 정리합니다.</p>
+          </div>
+        </div>
+
+        <h3>1) 클라우드 컴퓨팅과 배포 모델</h3>
+        <div class="cards">
+          <div class="card">
+            <span class="tag blue">Private Cloud</span>
+            <h4>기업 전용 클라우드</h4>
+            <p>한 기업이 전용으로 구축·운영하는 폐쇄형 클라우드입니다.</p>
+          </div>
+          <div class="card">
+            <span class="tag orange">Public Cloud</span>
+            <h4>공용 클라우드</h4>
+            <p>인터넷을 통해 여러 고객이 사용하는 클라우드입니다. AWS, Azure, GCP 등이 대표적입니다.</p>
+          </div>
+          <div class="card">
+            <span class="tag green">Hybrid Cloud</span>
+            <h4>혼합형</h4>
+            <p>Public Cloud와 Private/온프레미스 환경을 연동하여 함께 사용하는 방식입니다.</p>
+          </div>
+        </div>
+
+        <div class="exam">
+          <b>시험 포인트</b><br/>
+          “어디에 구축되어 있는가?”는 배포 모델(Public / Private / Hybrid), “어디까지 누가 관리하는가?”는 서비스 모델(IaaS / PaaS / SaaS)로 구분합니다.
+        </div>
+
+        <h3>2) IaaS · PaaS · SaaS</h3>
+        <table>
+          <thead>
+            <tr><th>모델</th><th>핵심 의미</th><th>사용자가 주로 관리</th><th>서비스 제공자가 주로 관리</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>IaaS</b></td><td>서버 운영에 필요한 IT 인프라 제공</td><td>OS 위의 애플리케이션, 데이터 등</td><td>서버, 스토리지, 네트워크, 가상화 기반</td></tr>
+            <tr><td><b>PaaS</b></td><td>애플리케이션 개발·실행·테스트·관리를 위한 플랫폼 제공</td><td>애플리케이션과 데이터 중심</td><td>런타임·미들웨어·OS·인프라</td></tr>
+            <tr><td><b>SaaS</b></td><td>완성된 소프트웨어 기능을 서비스로 제공</td><td>서비스 사용</td><td>애플리케이션을 포함한 대부분</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout blue">
+          <strong>Pay-as-you-go(종량제)</strong>
+          실제 사용한 만큼 비용을 지불하는 방식입니다. 초기 대규모 투자 없이 필요한 만큼 사용하고, 사용량에 맞춰 비용을 지불하는 것이 클라우드 과금의 핵심입니다.
+        </div>
+
+        <h3>3) AWS 클라우드의 6대 이점</h3>
+        <div class="six">
+          <div class="pillar"><b>① 고정 비용 → 가변 비용</b><div class="kpi">초기 데이터센터 투자 대신 사용량 기반 비용</div></div>
+          <div class="pillar"><b>② 규모의 경제</b><div class="kpi">대규모 통합 운영으로 더 낮은 단가</div></div>
+          <div class="pillar"><b>③ 용량 추측 불필요</b><div class="kpi">수요에 맞춰 리소스 확장·축소</div></div>
+          <div class="pillar"><b>④ 속도와 민첩성</b><div class="kpi">리소스를 빠르게 확보하고 실험</div></div>
+          <div class="pillar"><b>⑤ 데이터센터 운영 부담 감소</b><div class="kpi">전력·냉각·물리 인프라 운영 부담 이전</div></div>
+          <div class="pillar"><b>⑥ 빠른 글로벌 배포</b><div class="kpi">리전·AZ·엣지 로케이션을 활용</div></div>
+        </div>
+
+        <h3>4) 꼭 구분할 아키텍처 개념</h3>
+        <table>
+          <thead><tr><th>개념</th><th>질문으로 이해하기</th><th>핵심</th></tr></thead>
+          <tbody>
+            <tr><td><span class="term">민첩성 Agility</span></td><td>리소스를 얼마나 빨리 확보·배포·실험할 수 있는가?</td><td>빠른 프로비저닝, 테스트, 혁신</td></tr>
+            <tr><td><span class="term">탄력성 Elasticity</span></td><td>수요에 따라 자동으로 늘리고 줄일 수 있는가?</td><td>Scale-out / Scale-in, Auto Scaling</td></tr>
+            <tr><td><span class="term">고가용성 High Availability</span></td><td>장애가 있어도 서비스 중단을 최소화할 수 있는가?</td><td>중복 구성, 장애조치</td></tr>
+          </tbody>
+        </table>
+
+        <div class="instructor">
+          탄력성을 설명할 때 “평일 점심시간에 주문이 몰리고 밤에는 줄어드는 쇼핑몰”을 예로 들면 쉽습니다.
+          피크 시간에는 자동 확장하고, 수요가 줄면 축소하여 비용까지 줄이는 흐름을 연결해 설명하세요.
+        </div>
+
+        <div class="quiz-links">
+          <a href="https://forms.gle/vTiVrSffgAdPi1UDA" target="_blank" rel="noopener">1.1 확인 퀴즈</a>
+          <a href="https://forms.gle/TbCBq9XsWn2c2uUD9" target="_blank" rel="noopener">1.1 복습 퀴즈</a>
+        </div>
+        <a class="toplink" href="#top">↑ 맨 위로</a>
+      </section>
+
+      <section id="m2">
+        <div class="module-head">
+          <div class="module-no">2</div>
+          <div>
+            <h2>1.2 AWS 클라우드의 설계 원칙</h2>
+            <p class="lead">클라우드 환경에서는 한 번에 크게 만드는 것보다, 작은 구성요소를 분리하고 장애를 격리하며 자동으로 복구할 수 있도록 설계하는 것이 중요합니다.</p>
+          </div>
+        </div>
+
+        <h3>1) 강한 결합 vs 느슨한 결합</h3>
+        <div class="compare">
+          <div class="bad">
+            <span class="tag orange">Tightly Coupled</span>
+            <h4>강한 결합</h4>
+            <p>구성요소 간 의존성이 크면 하나의 장애가 다른 구성요소로 쉽게 전파될 수 있습니다.</p>
+          </div>
+          <div class="good">
+            <span class="tag green">Loosely Coupled</span>
+            <h4>느슨한 결합</h4>
+            <p>구성요소의 상호 의존성을 줄이고 오류를 격리하여 전체 시스템 장애로의 파급을 줄입니다.</p>
+          </div>
+        </div>
+
+        <h3>2) 모놀리식 vs 마이크로서비스</h3>
+        <table>
+          <thead><tr><th>구분</th><th>특징</th><th>수업 포인트</th></tr></thead>
+          <tbody>
+            <tr><td><b>Monolithic</b></td><td>기능이 하나의 큰 애플리케이션에 밀접하게 묶여 있음</td><td>변경·장애의 영향 범위가 커질 수 있음</td></tr>
+            <tr><td><b>Microservices</b></td><td>작은 서비스 단위로 분리</td><td>각 서비스를 EC2, Lambda, 컨테이너 등 서로 다른 기술로 구현 가능</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout blue">
+          <strong>추적성 활성화</strong>
+          시스템의 사용자 활동, API 호출, 변경 사항을 기록하고 추적할 수 있어야 합니다. 자료에서는 AWS CloudTrail을 대표 서비스로 제시합니다.
+        </div>
+
+        <h3>3) 복원력(Resilience)과 자동 장애조치</h3>
+        <div class="flow">
+          <div class="node">정상 리소스</div><div class="arrow">→</div>
+          <div class="node">장애 발생</div><div class="arrow">→</div>
+          <div class="node">Failover</div><div class="arrow">→</div>
+          <div class="node">서비스 지속 / 복구</div>
+        </div>
+        <p>결함이 발생하더라도 정상 리소스로 자동 장애조치하여 시스템이 기능을 지속하거나 빠르게 복구할 수 있도록 설계합니다.</p>
+
+        <div class="compare">
+          <div><h4>Durability · 내구성</h4><p>데이터를 잃지 않고 안전하게 보존하는 능력.</p></div>
+          <div><h4>Elasticity · 탄력성</h4><p>수요 변화에 따라 리소스를 자동으로 확장·축소하는 능력.</p></div>
+        </div>
+
+        <h3>4) AWS Well-Architected Framework — 6개 원칙</h3>
+        <div class="six">
+          <div class="pillar"><b>보안</b><div class="kpi">데이터·자산 보호, 권한 관리, 추적성</div></div>
+          <div class="pillar"><b>안정성</b><div class="kpi">자동 복구, 복구 절차 테스트, 수요 대응</div></div>
+          <div class="pillar"><b>성능 효율성</b><div class="kpi">효율적인 컴퓨팅 사용, 수평 확장, 서버리스</div></div>
+          <div class="pillar"><b>비용 최적화</b><div class="kpi">낭비 제거, 적정 크기 조정, 관리형 서비스</div></div>
+          <div class="pillar"><b>운영 우수성</b><div class="kpi">작고 잦은 변경, 지속적 개선, 실패에서 학습</div></div>
+          <div class="pillar"><b>지속 가능성</b><div class="kpi">자원·전력 사용 효율화, 활용도 극대화</div></div>
+        </div>
+
+        <div class="exam">
+          <b>시험 포인트</b><br/>
+          문제에서 “자동 복구”, “수요 변화에 따라 확장”, “권한·감사”, “불필요한 비용 제거” 같은 표현이 나오면 각각 안정성, 성능/탄력성, 보안, 비용 최적화와 연결해서 보세요.
+        </div>
+
+        <h3>5) 하이브리드 배포</h3>
+        <div class="callout green">
+          <strong>AWS Outposts</strong>
+          온프레미스 인프라와 AWS 클라우드를 결합하여 사용하는 대표적인 하이브리드 지원 서비스로 정리할 수 있습니다.
+        </div>
+
+        <div class="quiz-links">
+          <a href="https://forms.gle/tHyoxUany3ekwF5L6" target="_blank" rel="noopener">1.2 확인 퀴즈</a>
+          <a href="https://forms.gle/7vCixPNCL1Sj4FEK7" target="_blank" rel="noopener">1.2 복습 퀴즈</a>
+        </div>
+        <a class="toplink" href="#top">↑ 맨 위로</a>
+      </section>
+
+      <section id="m3">
+        <div class="module-head">
+          <div class="module-no">3</div>
+          <div>
+            <h2>1.3 AWS 클라우드 마이그레이션</h2>
+            <p class="lead">클라우드 전환은 단순한 서버 이동이 아니라 조직, 기술, 운영, 보안, 재무 관점까지 포함한 변화입니다.</p>
+          </div>
+        </div>
+
+        <h3>1) AWS Cloud Adoption Framework (AWS CAF)</h3>
+        <p>AWS CAF는 조직의 클라우드 준비 상태를 평가하고 부족한 역량을 식별해 클라우드 전환 로드맵을 수립하도록 돕는 프레임워크입니다.</p>
+
+        <div class="six">
+          <div class="pillar"><span class="tag blue">비즈니스 역량</span><b>Business</b><div class="kpi">가치·성과, 전략과 클라우드 투자 연결</div></div>
+          <div class="pillar"><span class="tag blue">비즈니스 역량</span><b>People</b><div class="kpi">조직 변화, 학습, 인재, 변화관리</div></div>
+          <div class="pillar"><span class="tag blue">비즈니스 역량</span><b>Governance</b><div class="kpi">통제, 감독, 재무/위험 관리</div></div>
+          <div class="pillar"><span class="tag green">기술 역량</span><b>Platform</b><div class="kpi">기술 기반과 클라우드 아키텍처</div></div>
+          <div class="pillar"><span class="tag green">기술 역량</span><b>Security</b><div class="kpi">보안, 위험, 규정 준수, IAM</div></div>
+          <div class="pillar"><span class="tag green">기술 역량</span><b>Operations</b><div class="kpi">안정적 운영, 패치, 구성, 이벤트 관리</div></div>
+        </div>
+
+        <h3>2) 클라우드 변환 여정 4단계</h3>
+        <div class="timeline">
+          <div class="step"><strong>1. Envision</strong>비즈니스 가치와 기대 결과를 정의</div>
+          <div class="step"><strong>2. Align</strong>역량 격차를 파악하고 실행 계획 정렬</div>
+          <div class="step"><strong>3. Launch</strong>프로토타입·파일럿을 배포하여 가치 입증</div>
+          <div class="step"><strong>4. Scale</strong>비즈니스 가치를 확장하고 지속적으로 개선</div>
+        </div>
+
+        <h3>3) 마이그레이션 7R 전략</h3>
+        <div class="rgrid">
+          <div class="r"><b>Refactor</b><span>클라우드 네이티브 기능을 활용하도록 재설계</span></div>
+          <div class="r"><b>Replatform</b><span>기본 구조는 유지하되 일부 핵심 요소를 최적화</span></div>
+          <div class="r"><b>Rehost</b><span>코드 변경 없이 그대로 이동 — Lift and Shift</span></div>
+          <div class="r"><b>Repurchase</b><span>기존 제품을 SaaS 등 다른 상용 제품으로 교체</span></div>
+          <div class="r"><b>Relocate</b><span>하이퍼바이저 수준에서 그대로 AWS로 이동</span></div>
+          <div class="r"><b>Retain</b><span>지금은 이전하지 않고 기존 환경 유지</span></div>
+          <div class="r"><b>Retire</b><span>더 이상 필요 없는 애플리케이션 제거</span></div>
+        </div>
+
+        <div class="instructor">
+          7R은 ‘이전 전략’이므로 서비스 이름 암기보다 “무엇을 얼마나 변경하는가?”로 비교하면 기억하기 쉽습니다.
+          Rehost는 거의 그대로, Replatform은 일부 최적화, Refactor는 구조 자체를 재설계하는 흐름으로 설명하세요.
+        </div>
+
+        <h3>4) 마이그레이션 지원 서비스와 도구</h3>
+        <table>
+          <thead><tr><th>단계</th><th>서비스/도구</th><th>역할</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3"><b>실사·평가</b></td><td>AWS Application Discovery Service</td><td>서버 구성, 성능, 의존 관계 수집</td></tr>
+            <tr><td>Migration Evaluator</td><td>온프레미스 사용량을 기반으로 TCO와 비즈니스 사례 평가</td></tr>
+            <tr><td>AWS Migration Hub</td><td>전체 마이그레이션 진행 상황을 한곳에서 추적·관리</td></tr>
+            <tr><td rowspan="4"><b>이동</b></td><td>AWS Application Migration Service (MGN)</td><td>물리/가상 서버를 EC2로 블록 수준 복제하여 이전</td></tr>
+            <tr><td>AWS Database Migration Service (DMS)</td><td>DB를 다른 환경으로 마이그레이션</td></tr>
+            <tr><td>AWS DataSync</td><td>파일/오브젝트 대량 데이터를 네트워크로 동기화·이동</td></tr>
+            <tr><td>AWS Snow Family</td><td>네트워크 제약 환경에서 대용량 오프라인 데이터 이전</td></tr>
+            <tr><td><b>전문 지원</b></td><td>AWS Professional Services</td><td>AWS 전문가의 프로젝트 수행 및 자문</td></tr>
+          </tbody>
+        </table>
+
+        <h4>Snow Family — 자료 기준 비교</h4>
+        <table>
+          <thead><tr><th>구성</th><th>자료의 설명</th></tr></thead>
+          <tbody>
+            <tr><td>Snowcone</td><td>가장 작은 휴대형 디바이스, 소규모 데이터 수집·이관</td></tr>
+            <tr><td>Snowball Edge</td><td>수십 TB~페타바이트급 데이터 수집/연산 후 물리 이동</td></tr>
+            <tr><td>Snowmobile</td><td>수십 PB~100PB급 데이터를 트럭 형태로 오프라인 이동</td></tr>
+          </tbody>
+        </table>
+
+        <div class="quiz-links">
+          <a href="https://forms.gle/ctxnEaRUgmzK3aU48" target="_blank" rel="noopener">1.3 확인 퀴즈</a>
+          <a href="https://forms.gle/yKAaavPAta6uBfhSA" target="_blank" rel="noopener">1.3 복습 퀴즈</a>
+        </div>
+        <a class="toplink" href="#top">↑ 맨 위로</a>
+      </section>
+
+      <section id="m4">
+        <div class="module-head">
+          <div class="module-no">4</div>
+          <div>
+            <h2>1.4 클라우드 경제성</h2>
+            <p class="lead">클라우드 비용의 핵심은 초기 대규모 투자를 줄이고, 사용량에 맞춰 지불하며, 지속적으로 사용량을 최적화하는 것입니다.</p>
+          </div>
+        </div>
+
+        <h3>1) CapEx vs OpEx</h3>
+        <div class="compare">
+          <div class="bad">
+            <span class="tag orange">CapEx · 자본 지출</span>
+            <h4>미리 구매하고 소유</h4>
+            <p>데이터센터, 서버, 네트워크, 냉각 시설 등을 초기에 큰 비용으로 직접 구매합니다. 최대 수요를 미리 예측하기 때문에 과다 할당 위험도 있습니다.</p>
+          </div>
+          <div class="good">
+            <span class="tag green">OpEx · 운용 비용</span>
+            <h4>사용량에 맞춰 운영비로 지불</h4>
+            <p>인프라를 직접 소유하지 않고 사용한 만큼 일상적인 운영비 형태로 지불합니다. 실제 수요에 맞게 비용을 조절하기 쉽습니다.</p>
+          </div>
+        </div>
+
+        <h3>2) 규모의 경제와 TCO</h3>
+        <div class="cards">
+          <div class="card">
+            <span class="tag blue">Economies of Scale</span>
+            <h4>규모의 경제</h4>
+            <p>AWS가 많은 고객의 수요를 통합 운영하면서 서버, 전력, 데이터센터 구축 비용을 더 낮은 단가로 제공할 수 있다는 개념입니다.</p>
+          </div>
+          <div class="card">
+            <span class="tag violet">TCO</span>
+            <h4>Total Cost of Ownership</h4>
+            <p>서버 구매가격만이 아니라 유지보수, 교체, 시설, 물리 보안 등 모든 직·간접 비용을 함께 비교하는 개념입니다.</p>
+          </div>
+          <div class="card">
+            <span class="tag orange">Cloud TCO</span>
+            <h4>비용 항목의 이전</h4>
+            <p>시설, 하드웨어 유지·교체, 데이터센터 물리 보안 등의 부담이 AWS 측으로 이동하여 고객의 직접 운영 부담이 줄어듭니다.</p>
+          </div>
+        </div>
+
+        <h3>3) 클라우드 요금 모델의 3대 축</h3>
+        <table>
+          <thead><tr><th>구분</th><th>무엇에 따라 비용이 달라지나?</th></tr></thead>
+          <tbody>
+            <tr><td><b>Compute</b></td><td>인스턴스 실행 시간 및 CPU/RAM 등 사양</td></tr>
+            <tr><td><b>Storage</b></td><td>저장 용량과 스토리지 클래스</td></tr>
+            <tr><td><b>Data Transfer Out</b></td><td>클라우드에서 인터넷/다른 리전 등 외부로 나가는 데이터 전송</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout">
+          <strong>자료의 핵심 구분</strong>
+          Inbound(클라우드로 들어오는 데이터)는 무료, Outbound(클라우드에서 인터넷/타 리전으로 나가는 데이터)는 유료로 정리되어 있습니다.
+        </div>
+
+        <h3>4) 비용 최적화 방법</h3>
+        <table>
+          <thead><tr><th>방법</th><th>핵심</th><th>적합한 상황</th></tr></thead>
+          <tbody>
+            <tr><td><b>Right Sizing</b></td><td>CPU/메모리 사용률 등을 보고 인스턴스 크기 최적화</td><td>과도한 사양으로 인한 낭비 제거</td></tr>
+            <tr><td><b>Reserved Instances / Savings Plans</b></td><td>1년 또는 3년 사용 약정으로 할인</td><td>예측 가능한 장기 사용</td></tr>
+            <tr><td><b>Spot Instances</b></td><td>AWS 유휴 용량을 저렴하게 사용하되 중단 가능</td><td>중단 가능하거나 유연한 워크로드</td></tr>
+            <tr><td><b>통합 결제</b></td><td>AWS Organizations로 여러 계정의 사용량을 묶어 결제</td><td>조직 전체 사용량·비용 관리</td></tr>
+          </tbody>
+        </table>
+
+        <div class="exam">
+          <b>시험 포인트</b><br/>
+          “항상 켜져 있고 사용량이 예측 가능”과 “중단되어도 괜찮은 배치 작업”은 서로 다른 구매 옵션을 떠올려야 합니다.
+        </div>
+
+        <h3>5) 주요 용어 구분</h3>
+        <div class="cards">
+          <div class="card"><h4>Elasticity · 탄력성</h4><p>수요에 따라 리소스를 자동으로 늘리고 줄이는 능력.</p></div>
+          <div class="card"><h4>Availability · 가용성</h4><p>시스템이 정상적으로 작동하여 서비스를 제공할 수 있는 시간의 비율.</p></div>
+          <div class="card"><h4>Durability · 내구성</h4><p>데이터가 손실되지 않고 안전하게 보존되는 능력.</p></div>
+          <div class="card"><h4>Reliability · 신뢰성</h4><p>장애 상황에서도 기대한 기능을 수행하는 능력.</p></div>
+        </div>
+
+        <a class="toplink" href="#top">↑ 맨 위로</a>
+      </section>
+
+      <section id="m5">
+        <div class="module-head">
+          <div class="module-no">5</div>
+          <div>
+            <h2>1.5 AWS 글로벌 인프라</h2>
+            <p class="lead">AWS는 리전, 가용 영역, 엣지 로케이션으로 구성된 분산 인프라를 통해 글로벌 서비스를 제공합니다.</p>
+          </div>
+        </div>
+
+        <div class="callout red">
+          <strong>수치 표기 주의</strong>
+          아래 리전/AZ/엣지 개수는 첨부 자료의 “자료 기준” 수치입니다. 실제 AWS 글로벌 인프라 수치는 지속적으로 변할 수 있으므로 수업 직전 최신 공식 수치를 확인하는 것이 좋습니다.
+        </div>
+
+        <h3>1) Region → AZ → Data Center</h3>
+        <div class="nested">
+          <div class="az"><b>Availability Zone A</b><div class="dc">독립된 데이터센터 집합</div></div>
+          <div class="az"><b>Availability Zone B</b><div class="dc">독립된 데이터센터 집합</div></div>
+          <div class="az"><b>Availability Zone C</b><div class="dc">독립된 데이터센터 집합</div></div>
+        </div>
+        <div class="edge"><b>Edge Location</b> — 사용자와 가까운 곳에서 콘텐츠 캐싱, 지연 시간 감소, 글로벌 네트워크 가속 등에 활용</div>
+
+        <table>
+          <thead><tr><th>요소</th><th>정의</th><th>대표 목적</th></tr></thead>
+          <tbody>
+            <tr><td><b>Region</b></td><td>지리적으로 분리된 물리적 데이터센터의 묶음</td><td>규제·데이터 상주, 멀티리전 재해복구</td></tr>
+            <tr><td><b>Availability Zone</b></td><td>한 리전 안의 물리적으로 격리된 하나 이상의 데이터센터 집합</td><td>고가용성, 내결함성, Multi-AZ</td></tr>
+            <tr><td><b>Edge Location</b></td><td>전 세계 주요 도시에 위치한 AWS 글로벌 네트워크 거점</td><td>캐싱, 지연 시간 감소, 빠른 전송</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout blue">
+          <strong>자료 기준 예시 리전</strong>
+          서울 <span class="mono">ap-northeast-2</span> · 도쿄 <span class="mono">ap-northeast-1</span> · 오하이오 <span class="mono">us-east-2</span> · 프랑크푸르트 <span class="mono">eu-central-1</span>
+        </div>
+
+        <h3>2) 하이브리드 — AWS Outposts</h3>
+        <p>AWS의 서버와 네트워크 장비를 고객의 온프레미스 데이터센터나 공장 등에 설치하여, AWS와 유사한 인프라·API·도구를 로컬 환경에서도 사용할 수 있도록 지원합니다.</p>
+
+        <h3>3) 글로벌 전송 및 애플리케이션 가속</h3>
+        <table>
+          <thead><tr><th>서비스</th><th>핵심 역할</th><th>키워드</th></tr></thead>
+          <tbody>
+            <tr><td><b>Amazon Route 53</b></td><td>완전 관리형 DNS 서비스</td><td>도메인 등록, DNS 확인, 지연 시간·가중치·장애조치 라우팅</td></tr>
+            <tr><td><b>AWS Global Accelerator</b></td><td>AWS 글로벌 네트워크를 활용하여 애플리케이션 성능·가용성 향상</td><td>Anycast Static IP, 빠른 Failover</td></tr>
+            <tr><td><b>Amazon CloudFront</b></td><td>콘텐츠를 전 세계 사용자에게 빠르게 전달하는 CDN</td><td>Edge 캐싱, S3/EC2 등을 Origin으로 사용</td></tr>
+          </tbody>
+        </table>
+
+        <div class="exam">
+          <b>시험 포인트</b><br/>
+          Route 53은 “DNS”, CloudFront는 “콘텐츠 캐싱/CDN”, Global Accelerator는 “고정 IP + AWS 글로벌 네트워크를 통한 가속”이라는 식으로 역할을 분리해 기억합니다.
+        </div>
+
+        <h3>4) 모니터링 및 클라우드 데스크톱</h3>
+        <table>
+          <thead><tr><th>서비스</th><th>핵심</th></tr></thead>
+          <tbody>
+            <tr><td><b>AWS Personal Health Dashboard</b></td><td>내 계정에서 사용하는 특정 AWS 서비스의 상태, 이벤트 및 장애 알림</td></tr>
+            <tr><td><b>AWS Service Health Dashboard</b></td><td>AWS 전체 리전/서비스의 공개 상태 확인</td></tr>
+            <tr><td><b>AWS WorkSpaces</b></td><td>클라우드 기반 보안 가상 데스크톱(VDI)</td></tr>
+            <tr><td><b>Amazon AppStream 2.0</b></td><td>고성능 애플리케이션을 저사양 클라이언트로 스트리밍 방식 제공</td></tr>
+          </tbody>
+        </table>
+
+        <div class="quiz-links">
+          <a href="https://forms.gle/qty4CUikQGcTKeor8" target="_blank" rel="noopener">1.5 확인 퀴즈</a>
+          <a href="https://forms.gle/of3RZT8fRWp2vk23A" target="_blank" rel="noopener">1.5 복습 퀴즈</a>
+        </div>
+        <a class="toplink" href="#top">↑ 맨 위로</a>
+      </section>
+
+      <section id="review">
+        <div class="module-head">
+          <div class="module-no">6</div>
+          <div>
+            <h2>Day 1 최종 정리</h2>
+            <p class="lead">오늘 배운 내용은 아래 5개의 질문에 답할 수 있으면 큰 흐름을 잡은 것입니다.</p>
+          </div>
+        </div>
+
+        <div class="summary-box">
+          <h3>5문장으로 정리</h3>
+          <ol>
+            <li><b>왜 클라우드인가?</b> — 초기 고정 투자를 줄이고 사용량 기반으로 빠르게 확장·축소할 수 있기 때문입니다.</li>
+            <li><b>어떻게 설계하는가?</b> — 느슨한 결합, 추적성, 자동 복구, Well-Architected 원칙을 적용합니다.</li>
+            <li><b>어떻게 이전하는가?</b> — AWS CAF로 조직의 준비 상태를 살피고, 7R 전략과 적절한 이동 도구를 선택합니다.</li>
+            <li><b>어떻게 비용을 관리하는가?</b> — Right Sizing, 약정 할인, Spot, 통합 결제 등으로 지속적으로 최적화합니다.</li>
+            <li><b>어디에서 실행되는가?</b> — Region, AZ, Edge Location을 조합하여 가용성·지연·규제 요구사항을 만족시킵니다.</li>
+          </ol>
+        </div>
+
+        <table>
+          <thead><tr><th>문제에서 이런 표현이 보이면</th><th>떠올릴 키워드</th></tr></thead>
+          <tbody>
+            <tr><td>“필요한 만큼만 사용”, “초기 투자 최소화”</td><td>Pay-as-you-go / OpEx</td></tr>
+            <tr><td>“수요에 따라 자동으로 증가·감소”</td><td>Elasticity</td></tr>
+            <tr><td>“장애가 있어도 서비스 지속”</td><td>High Availability / Resilience / Failover</td></tr>
+            <tr><td>“API 호출 추적, 누가 변경했는지 확인”</td><td>AWS CloudTrail</td></tr>
+            <tr><td>“코드 변경 없이 그대로 이전”</td><td>Rehost</td></tr>
+            <tr><td>“DB만 관리형으로 바꾸며 최적화”</td><td>Replatform</td></tr>
+            <tr><td>“사용량과 사양을 줄여 낭비 제거”</td><td>Right Sizing</td></tr>
+            <tr><td>“고객과 가까운 위치에서 캐싱”</td><td>Edge Location / CloudFront</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="quiz">
+        <div class="module-head">
+          <div class="module-no">7</div>
+          <div>
+            <h2>종합 확인 문제</h2>
+            <p class="lead">수업 마무리 10~15분용. 답은 각 문항을 클릭해서 확인할 수 있습니다.</p>
+          </div>
+        </div>
+
+        <details>
+          <summary>Q1. 초기 데이터센터 구매 비용을 줄이고 실제 사용량에 맞춰 비용을 지불하는 방식과 가장 가까운 개념은?</summary>
+          <p><b>정답:</b> OpEx / Pay-as-you-go. 고정적인 선투자 중심의 CapEx를 사용량 기반 운용 비용으로 전환하는 흐름입니다.</p>
+        </details>
+        <details>
+          <summary>Q2. 트래픽 증가에 따라 서버 수를 자동으로 늘리고 감소하면 줄이는 능력은?</summary>
+          <p><b>정답:</b> 탄력성(Elasticity).</p>
+        </details>
+        <details>
+          <summary>Q3. 한 구성요소의 장애가 전체 시스템으로 퍼지지 않도록 설계하는 원칙은?</summary>
+          <p><b>정답:</b> 느슨한 결합(Loosely Coupling)과 오류 격리.</p>
+        </details>
+        <details>
+          <summary>Q4. AWS에서 사용자 활동과 API 호출을 기록·추적하는 대표 서비스는?</summary>
+          <p><b>정답:</b> AWS CloudTrail.</p>
+        </details>
+        <details>
+          <summary>Q5. AWS CAF의 4단계를 순서대로 말해보세요.</summary>
+          <p><b>정답:</b> Envision → Align → Launch → Scale.</p>
+        </details>
+        <details>
+          <summary>Q6. 애플리케이션 코드를 거의 변경하지 않고 그대로 AWS로 옮기는 7R 전략은?</summary>
+          <p><b>정답:</b> Rehost (Lift and Shift).</p>
+        </details>
+        <details>
+          <summary>Q7. 기본 아키텍처는 유지하지만 자체 DB를 관리형 DB로 바꾸는 식의 최적화 전략은?</summary>
+          <p><b>정답:</b> Replatform.</p>
+        </details>
+        <details>
+          <summary>Q8. CPU 사용률이 낮은 대형 인스턴스를 더 작은 크기로 바꾸는 비용 최적화 기법은?</summary>
+          <p><b>정답:</b> Right Sizing.</p>
+        </details>
+        <details>
+          <summary>Q9. 중단 가능성이 있지만 유휴 AWS 용량을 저렴하게 쓰는 구매 옵션은?</summary>
+          <p><b>정답:</b> Spot Instances.</p>
+        </details>
+        <details>
+          <summary>Q10. 한 리전 안에서 물리적으로 격리된 데이터센터 집합을 무엇이라고 하나요?</summary>
+          <p><b>정답:</b> Availability Zone(AZ).</p>
+        </details>
+        <details>
+          <summary>Q11. 전 세계 사용자에게 정적/동적 웹 콘텐츠를 빠르게 전달하기 위한 CDN 서비스는?</summary>
+          <p><b>정답:</b> Amazon CloudFront.</p>
+        </details>
+        <details>
+          <summary>Q12. 도메인 등록과 DNS 라우팅을 제공하는 AWS 서비스는?</summary>
+          <p><b>정답:</b> Amazon Route 53.</p>
+        </details>
+        <details>
+          <summary>Q13. AWS 글로벌 네트워크와 Static IP를 이용해 글로벌 애플리케이션 성능과 가용성을 높이는 서비스는?</summary>
+          <p><b>정답:</b> AWS Global Accelerator.</p>
+        </details>
+        <details>
+          <summary>Q14. 데이터가 손실되지 않고 보존되는 능력과 시스템이 정상 서비스되는 시간의 비율을 각각 무엇이라 하나요?</summary>
+          <p><b>정답:</b> 내구성(Durability), 가용성(Availability).</p>
+        </details>
+        <details>
+          <summary>Q15. 온프레미스에 AWS 서버/네트워크 장비를 설치해 하이브리드 환경을 구성할 때 떠올릴 서비스는?</summary>
+          <p><b>정답:</b> AWS Outposts.</p>
+        </details>
+
+        <div class="callout green">
+          <strong>마지막 점검</strong>
+          서비스 이름을 외우는 것보다, 문제의 요구사항에서 “비용 / 가용성 / 지연시간 / 운영 부담 / 마이그레이션 변경 수준” 중 무엇을 묻는지 먼저 구분하는 것이 중요합니다.
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <strong>AWS Certified Cloud Practitioner · Day 1 교재</strong><br/>
+      기반 자료: 1.1 AWS 클라우드의 이점 · 1.2 AWS 클라우드의 설계 원칙 · 1.3 AWS 클라우드 마이그레이션 ·
+      1.4 클라우드 경제성 · 1.5 AWS 글로벌 인프라
+      <div class="print-note">브라우저에서 “인쇄 → PDF로 저장”을 사용하면 배포용 PDF로도 만들 수 있습니다.</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+(function(){
+  const progress = document.getElementById('progress');
+  const links = [...document.querySelectorAll('#toc a')];
+  const sections = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+  function onScroll(){
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    progress.style.width = (max > 0 ? (doc.scrollTop / max) * 100 : 0) + '%';
+
+    let current = sections[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top <= 140) current = sec;
+    }
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current.id));
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  const btn = document.getElementById('toggleInstructor');
+  btn.addEventListener('click', ()=>{
+    document.body.classList.toggle('hide-instructor');
+    btn.textContent = document.body.classList.contains('hide-instructor') ? '강사 노트 보이기' : '강사 노트 숨기기';
+  });
+})();
+</script>
+</body>
+</html>
